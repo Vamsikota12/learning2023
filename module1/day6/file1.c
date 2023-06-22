@@ -1,46 +1,40 @@
 #include <stdio.h>
 
-#define BUFFER_SIZE 1024
+// Define the structure for a box
+struct Box {
+    double length;
+    double width;
+    double height;
+};
+
+// Function to calculate the volume of a box
+double calculateVolume(struct Box* boxPtr) {
+    return boxPtr->length * boxPtr->width * boxPtr->height;
+}
+
+// Function to calculate the total surface area of a box
+double calculateSurfaceArea(struct Box* boxPtr) {
+    return 2 * (boxPtr->length * boxPtr->width +
+                boxPtr->length * boxPtr->height +
+                boxPtr->width * boxPtr->height);
+}
 
 int main() {
-    FILE *sourceFile, *destinationFile;
-    char sourceFileName[100], destinationFileName[100];
-    char buffer[BUFFER_SIZE];
-    size_t bytesRead;
-
-    // Get source file name from user
-    printf("Enter the source file name: ");
-    scanf("%s", sourceFileName);
-
-    // Open the source file in read mode
-    sourceFile = fopen(sourceFileName, "rb");
-    if (sourceFile == NULL) {
-        printf("Unable to open the source file.\n");
-        return 1;
-    }
-
-    // Get destination file name from user
-    printf("Enter the destination file name: ");
-    scanf("%s", destinationFileName);
-
-    // Open the destination file in write mode
-    destinationFile = fopen(destinationFileName, "wb");
-    if (destinationFile == NULL) {
-        printf("Unable to create the destination file.\n");
-        fclose(sourceFile);
-        return 1;
-    }
-
-    // Copy the contents from source to destination
-    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, sourceFile)) > 0) {
-        fwrite(buffer, 1, bytesRead, destinationFile);
-    }
-
-    printf("File copied successfully.\n");
-
-    // Close the files
-    fclose(sourceFile);
-    fclose(destinationFile);
-
+    struct Box myBox;  // Create an instance of the Box structure
+    struct Box* boxPtr = &myBox;  // Create a pointer to the Box structure and assign the address of myBox to it
+    
+    // Assign values to the members of the box using the structure pointer
+    boxPtr->length = 5.0;
+    boxPtr->width = 3.0;
+    boxPtr->height = 2.0;
+    
+    // Calculate the volume and surface area using the structure pointer
+    double volume = calculateVolume(boxPtr);
+    double surfaceArea = calculateSurfaceArea(boxPtr);
+    
+    printf("Volume: %.2f\n", volume);
+    printf("Surface Area: %.2f\n", surfaceArea);
+    
     return 0;
 }
+
